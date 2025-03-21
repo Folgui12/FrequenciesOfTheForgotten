@@ -9,28 +9,43 @@ public class ShoudChange : MonoBehaviour
     [SerializeField] private List<Transform> ObjectsPoints;
     [SerializeField] private List<Transform> FurniturePoints;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void ChangeObjects()
     {
-        for(int i = 0; i < Objects.Count;i++)
+        for (int i = 0; i < Objects.Count;i++) 
         {
-            Objects[i] = ObjectsPoints[Random.Range(0, ObjectsPoints.Count - 1)];
+            Objects[i].position = NextAvailablePoint().position;
         }
+
+    }
+
+    private Transform NextAvailablePoint()
+    {
+        WithObject currentPoint = ObjectsPoints[0].GetComponent<WithObject>();
+
+        while (currentPoint.haveAnyObject)
+        {
+            currentPoint = currentPoint.nextPoint.GetComponent<WithObject>(); 
+            Debug.Log(currentPoint.haveAnyObject);
+
+        }
+
+        currentPoint.haveAnyObject = true;
+
+        return currentPoint.transform;
     }
 
     public void ChangeFurniture()
     {
-        
+        for (int i = 0; i < Objects.Count; i++)
+        {
+            int rand = Random.Range(0, FurniturePoints.Count - 1);
+            if (FurniturePoints[rand].gameObject.activeInHierarchy)
+            {
+                Objects[i].position = FurniturePoints[rand].position;
+                FurniturePoints[rand].gameObject.SetActive(false);
+            }
+        }
+
+        //ActivePoints(FurniturePoints);
     }
 }

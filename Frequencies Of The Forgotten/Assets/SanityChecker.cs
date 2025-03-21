@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SanityChecker : MonoBehaviour
 {   
-    GameObject[] Rooms;
+    public GameObject[] Rooms;
 
     // Start is called before the first frame update
     void Start()
@@ -20,12 +20,34 @@ public class SanityChecker : MonoBehaviour
 
     private void StatusCheck(float status)
     {
-        if(status <= 10 && status > 5)
-            Debug.Log("");
-        else if(status <= 5 && status > 0)
-            Debug.Log("");
-        else 
-            Debug.Log("");
+        if (status <= 10 && status > 5)
+        {
+            ChangeObjectsInRooms();
+        }
+            
+        else if (status <= 5 && status > 0)
+        {
+            ChangeFurnitureInRooms();
+        }
+            
+        else
+            Debug.Log("Change Entire Room");
+    }
+
+    private void ChangeObjectsInRooms()
+    {
+        foreach (GameObject room in Rooms)
+        {
+            room.GetComponent<ShoudChange>().ChangeObjects();
+        }
+    }
+
+    private void ChangeFurnitureInRooms()
+    {
+        foreach (GameObject room in Rooms)
+        {
+            room.GetComponent<ShoudChange>().ChangeFurniture();
+        }
     }
 
     void OnTriggerEnter(Collider other)
