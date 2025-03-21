@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMindStatus : MonoBehaviour
+public class Points : MonoBehaviour
 {
-    //public float Sanity => sanity;
-    public float sanity;
-
+    public Transform[] PointList;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        PointList = GetComponentsInChildren<Transform>();
     }
 
     // Update is called once per frame
@@ -19,5 +17,4 @@ public class PlayerMindStatus : MonoBehaviour
     {
         
     }
-
 }
