@@ -9,43 +9,67 @@ public class ShoudChange : MonoBehaviour
     [SerializeField] private List<Transform> ObjectsPoints;
     [SerializeField] private List<Transform> FurniturePoints;
 
+    private int indexObjects;
+    private int indexFurniture;
+
+    void Start()
+    {
+        indexObjects = 0;
+        indexFurniture = 0;
+    }
+
     public void ChangeObjects()
     {
         for (int i = 0; i < Objects.Count;i++) 
         {
-            Objects[i].position = NextAvailablePoint().position;
+            Objects[i].position = NextAvailableObjectPoint().position;
         }
 
     }
 
-    private Transform NextAvailablePoint()
+    private Transform NextAvailableObjectPoint()
     {
-        WithObject currentPoint = ObjectsPoints[0].GetComponent<WithObject>();
+        WithObject currentPoint = ObjectsPoints[indexObjects].GetComponent<WithObject>();
 
         while (currentPoint.haveAnyObject)
         {
             currentPoint = currentPoint.nextPoint.GetComponent<WithObject>(); 
-            Debug.Log(currentPoint.haveAnyObject);
-
         }
 
         currentPoint.haveAnyObject = true;
+
+        indexObjects++;
+
+        if(indexObjects >= ObjectsPoints.Count)
+            indexObjects = 0;
 
         return currentPoint.transform;
     }
 
     public void ChangeFurniture()
     {
-        for (int i = 0; i < Objects.Count; i++)
+        for (int i = 0; i < Furniture.Count;i++) 
         {
-            int rand = Random.Range(0, FurniturePoints.Count - 1);
-            if (FurniturePoints[rand].gameObject.activeInHierarchy)
-            {
-                Objects[i].position = FurniturePoints[rand].position;
-                FurniturePoints[rand].gameObject.SetActive(false);
-            }
+            Furniture[i].position = NextAvailableFurniturePoint().position;
+        }
+    }
+
+    private Transform NextAvailableFurniturePoint()
+    {
+        WithObject currentPoint = FurniturePoints[indexFurniture].GetComponent<WithObject>();
+
+        while (currentPoint.haveAnyObject)
+        {
+            currentPoint = currentPoint.nextPoint.GetComponent<WithObject>(); 
         }
 
-        //ActivePoints(FurniturePoints);
+        currentPoint.haveAnyObject = true;
+
+        indexFurniture++;
+
+        if(indexFurniture >= FurniturePoints.Count)
+            indexFurniture = 0;
+
+        return currentPoint.transform;
     }
 }

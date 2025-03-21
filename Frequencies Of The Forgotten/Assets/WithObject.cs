@@ -14,7 +14,7 @@ public class WithObject : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("RoomObject"))
+        if (other.CompareTag("RoomObject") || other.CompareTag("Furniture"))
         {
             haveAnyObject = false;
         }
